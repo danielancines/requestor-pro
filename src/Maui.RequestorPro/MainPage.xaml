@@ -1,41 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Maui.RequestorPro.MainPage">
+             x:Class="Maui.RequestorPro.MainPage"
+             xmlns:viewModels="clr-namespace:Maui.RequestorPro.ViewModels.Base;assembly=Maui.RequestorPro.ViewModels"
+             xmlns:languages="clr-namespace:Maui.RequestorPro.Resources.Languages"
+             Shell.NavBarIsVisible="False"
+             x:DataType="viewModels:IMainPageViewModel">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Spacing="25"
-            Padding="30,0"
-            VerticalOptions="Center">
-
-            <Image
-                Source="dotnet_bot.png"
-                SemanticProperties.Description="Cute dot net bot waving hi to you!"
-                HeightRequest="200"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Hello, World!"
-                SemanticProperties.HeadingLevel="Level1"
-                FontSize="32"
-                HorizontalOptions="Center" />
-
-            <Label
-                Text="Welcome to .NET Multi-platform App UI"
-                SemanticProperties.HeadingLevel="Level2"
-                SemanticProperties.Description="Welcome to dot net Multi platform App U I"
-                FontSize="18"
-                HorizontalOptions="Center" />
-
-            <Button
-                x:Name="CounterBtn"
-                Text="Click me"
-                SemanticProperties.Hint="Counts the number of times you click"
-                Clicked="OnCounterClicked"
-                HorizontalOptions="Center" />
-
-        </VerticalStackLayout>
-    </ScrollView>
-
+    <Grid ColumnDefinitions="300,*"
+          ColumnSpacing="5"
+          Padding="10">
+        <Border StrokeShape="RoundRectangle 5">
+            <Grid RowDefinitions="30,*">
+                <Label Text="{x:Static languages:AppI8n.Workspaces_Title}"
+                       HorizontalOptions="Center"/>
+            </Grid>
+        </Border>
+        <Border Grid.Column="1"
+                StrokeShape="RoundRectangle 5">
+            <Grid RowDefinitions="Auto,200,*" 
+                  ColumnDefinitions="*,80"
+                  Padding="10"
+                  ColumnSpacing="5"
+                  RowSpacing="10">
+                <Entry Text="{Binding Url, Mode=TwoWay}"/>
+                <Button Grid.Column="1"
+                        Text="{x:Static languages:AppI8n.Send}"
+                        Command="{Binding SendCommand, Mode=OneTime}"/>
+                <Editor Grid.Row="1"
+                        Grid.ColumnSpan="2"
+                        Text="{Binding Body, Mode=OneWayToSource}"/>
+                <Editor Grid.Row="2"
+                        Grid.ColumnSpan="2"
+                        Text="{Binding Response, Mode=TwoWay}"/>
+            </Grid>
+        </Border>
+    </Grid>
 </ContentPage>
