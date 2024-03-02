@@ -5,6 +5,7 @@
              xmlns:viewModels="clr-namespace:Maui.RequestorPro.ViewModels.Base;assembly=Maui.RequestorPro.ViewModels"
              xmlns:languages="clr-namespace:Maui.RequestorPro.Resources.Languages"
              Shell.NavBarIsVisible="False"
+             Title="Requestor Pro"
              x:DataType="viewModels:IMainPageViewModel">
 
     <Grid ColumnDefinitions="300,*"
@@ -19,19 +20,27 @@
         <Border Grid.Column="1"
                 StrokeShape="RoundRectangle 5">
             <Grid RowDefinitions="Auto,200,*" 
-                  ColumnDefinitions="*,80"
+                  ColumnDefinitions="120,*,80"
                   Padding="10"
                   ColumnSpacing="5"
                   RowSpacing="10">
-                <Entry Text="{Binding Url, Mode=TwoWay}"/>
-                <Button Grid.Column="1"
+                <!--TODO Trazer GET como padrão, mas configurar como o último salvo pelo usuário-->
+                <Picker x:Name="MethodPicker" 
+                        HorizontalOptions="StartAndExpand" 
+                        WidthRequest="120"
+                        ItemsSource="{Binding HttpMethods}"
+                        ItemDisplayBinding="{Binding Key}">
+                </Picker>
+                <Entry Text="{Binding Url, Mode=TwoWay}"
+                       Grid.Column="1"/>
+                <Button Grid.Column="2"
                         Text="{x:Static languages:AppI8n.Send}"
-                        Command="{Binding SendCommand, Mode=OneTime}"/>
+                        Command="{Binding SendCommand, Mode=OneTime}" CommandParameter="{Binding SelectedItem, Source={Reference MethodPicker}, Mode=OneWay}"/>
                 <Editor Grid.Row="1"
-                        Grid.ColumnSpan="2"
+                        Grid.ColumnSpan="3"
                         Text="{Binding Body, Mode=OneWayToSource}"/>
                 <Editor Grid.Row="2"
-                        Grid.ColumnSpan="2"
+                        Grid.ColumnSpan="3"
                         Text="{Binding Response, Mode=TwoWay}"/>
             </Grid>
         </Border>

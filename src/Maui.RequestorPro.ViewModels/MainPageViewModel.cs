@@ -1,4 +1,5 @@
 ﻿using Maui.RequestorPro.ViewModels.Base;
+using System.Net.Http.Headers;
 using Utils.Commands;
 
 namespace Maui.RequestorPro.ViewModels;
@@ -17,12 +18,15 @@ public class MainPageViewModel : Observable, IMainPageViewModel
     {
         this._httpClientFactory = httpClientFactory;
         this.InitializeCommands();
+        this.InitializeHttpMethods();
     }
+
 
     #endregion
 
     #region Properties
 
+    public Dictionary<string, HttpMethod> HttpMethods { get; private set; }
     public ObservableCommand SendCommand { get; private set; }
     public string Body { get; set; }
 
@@ -62,7 +66,12 @@ public class MainPageViewModel : Observable, IMainPageViewModel
     {
         this.SendCommand = new ObservableCommand(this.OnSendRequest);
     }
-
+    private void InitializeHttpMethods()
+    {
+        this.HttpMethods = new Dictionary<string, HttpMethod>
+        (
+        );
+    }
     private async void OnSendRequest(object parameter)
     {
         this.Response = string.Empty;
@@ -70,7 +79,7 @@ public class MainPageViewModel : Observable, IMainPageViewModel
         var httpClient = this._httpClientFactory.CreateClient();
         try
         {
-            var payload = new StringContent(this.Body, new System.Net.Http.Headers.MediaTypeHeaderValue("application/json"));
+            var payload = new StringContent(this.Body, new MediaTypeHeaderValue("application/json"));
             var response = await httpClient.PostAsync(this.Url, payload);
             var responseContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -78,6 +87,7 @@ public class MainPageViewModel : Observable, IMainPageViewModel
         }
         catch (Exception ex)
         {
+            this.Response = ex.Message;
         }
     }
 
