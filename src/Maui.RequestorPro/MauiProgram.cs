@@ -1,4 +1,5 @@
-﻿using Maui.RequestorPro.Configuration;
+﻿using CommunityToolkit.Maui;
+using Maui.RequestorPro.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Maui.RequestorPro
@@ -11,6 +12,7 @@ namespace Maui.RequestorPro
             builder
                 .UseMauiApp<App>()
                 .ConfigApp()
+                .UseMauiCommunityToolkit()
                 .ConfigureFonts(fonts =>
                 {
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
